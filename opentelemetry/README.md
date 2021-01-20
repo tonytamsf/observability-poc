@@ -1,4 +1,4 @@
-## Open Telemetry Collector
+## Open Telemetry Collector Demo
 Flask app sending traces to SignalFX.
 
 Uses https://github.com/signalfx/splunk-otel-python and https://github.com/signalfx/splunk-otel-collector
