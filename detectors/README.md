@@ -3,7 +3,8 @@
 Create a file named `terraform.tfvars` and add variable values. A sample:
 ```
 auth_token = "signalfx token"
-email_address = "me@example.com"
+credential_id = "victorops integration id"
+routing_key = "victorops routing key"
 memory_used = 240000000
 host_names = ["host1", "host2"]
 ```

@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     signalfx = {
-      source = "splunk-terraform/signalfx"
+      source  = "splunk-terraform/signalfx"
       version = "6.4.0"
     }
   }
@@ -12,8 +12,13 @@ variable "auth_token" {
   type        = string
 }
 
-variable "email_address" {
-  description = "Send notifications to this email"
+variable "credential_id" {
+  description = "VictorOps integration id in Signalfx"
+  type        = string
+}
+
+variable "routing_key" {
+  description = "VictorOps routing key"
   type        = string
 }
 
@@ -29,21 +34,20 @@ variable "memory_used" {
 
 provider "signalfx" {
   auth_token = var.auth_token
-  api_url = "https://api.us2.signalfx.com"
+  api_url    = "https://api.us2.signalfx.com"
 }
 
-# Every resource needs a unique name
 resource "signalfx_detector" "memory_used" {
-    count = length(var.host_names)
-    name =  "${var.host_names[count.index]}: Memory usage"
-    program_text = <<-EOF
+  count        = length(var.host_names)
+  name         = "${var.host_names[count.index]}: Memory usage"
+  program_text = <<-EOF
 signal = data('memory.used', filter('host', '${var.host_names[count.index]}')).publish(label='A')
 detect(when(signal > ${var.memory_used}, '5m')).publish('High memory for last 5 minutes: ${var.host_names[count.index]}')
     EOF
   rule {
-        detect_label = "High memory for last 5 minutes: ${var.host_names[count.index]}"
-        description = "memory usage exceeds ${var.memory_used} for the last 5 minutes"
-        severity = "Critical"
-        notifications = ["Email,${var.email_address}"]
+    detect_label  = "High memory for last 5 minutes: ${var.host_names[count.index]}"
+    description   = "memory usage exceeds ${var.memory_used} for the last 5 minutes"
+    severity      = "Critical"
+    notifications = ["VictorOps,${var.credential_id},${var.routing_key}"]
   }
 }
