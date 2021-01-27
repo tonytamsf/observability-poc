@@ -19,6 +19,22 @@ variable "email_address" {
   type = string
 }
 
+variable "first_name" {
+  type = string
+}
+
+variable "last_name" {
+  type = string
+}
+
+variable "team_name" {
+  type = string
+}
+
+variable "user_name" {
+  type = string
+}
+
 provider "victorops" {
   api_id  = var.api_id
   api_key = var.api_key
@@ -26,13 +42,14 @@ provider "victorops" {
 
 # Create a team within victorops
 resource "victorops_team" "team" {
-  name = "DevOps-Test"
+  name = var.team_name
 }
+
 # Create a user within the victorops organization
 resource "victorops_user" "user1" {
-  first_name = "John"
-  last_name  = "Doe"
-  user_name  = "jdoex1er"
+  first_name = var.first_name
+  last_name  = var.last_name
+  user_name  = var.user_name
   email      = var.email_address
   is_admin   = "false"
 }
@@ -41,14 +58,6 @@ resource "victorops_user" "user1" {
 resource "victorops_team_membership" "test-membership" {
   team_id   = victorops_team.team.id
   user_name = victorops_user.user1.user_name
-}
-
-# Create phone number contact method for a user
-resource "victorops_contact" "contact_phone" {
-  user_name = victorops_user.user1.user_name
-  type      = "phone"
-  value     = "+12345678900"
-  label     = "test phone"
 }
 
 # Create an Escalation Policy for the team
@@ -60,7 +69,7 @@ resource "victorops_escalation_policy" "devops_high_severity" {
     entries = [
       {
         type     = "user"
-        username = "jdoex1er"
+        username = var.user_name
       }
     ]
   }
