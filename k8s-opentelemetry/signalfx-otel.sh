@@ -1,0 +1,1 @@
+envsubst < signalfx-otel.yaml | kubectl apply -f -

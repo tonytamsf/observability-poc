@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+  labels:
+    app: flask
+spec:
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      containers:
+      - name: flask
+        image: flask-app:12.0.0
+        imagePullPolicy: Never # Force minikube to use local docker images
+        volumeMounts: 
+        - name: redis-password
+          mountPath: /secrets/redis
+          readOnly: true
+        ports:
+        - containerPort: 5000
+        env:
+        - name: SIGNALFX_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: SPLK_TRACE_EXPORTER_URL
+          value: http://$(SIGNALFX_AGENT_HOST):9080/v1/trace
+      volumes:
+      - name: redis-password
+        secret: 
+          secretName: redis-password

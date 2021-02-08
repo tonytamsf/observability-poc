@@ -1,0 +1,11 @@
+fullnameOverride: agent
+logLevel: debug
+traceEndpointUrl: http://otel-collector.default.svc.cluster.local:9411/api/traces
+kubeletAPI:
+  skipVerify: true
+  url: https://localhost:10250
+monitors:
+- type: signalfx-forwarder
+  listenAddress: 0.0.0.0:9080
+writer:
+  traceExportFormat: zipkin
