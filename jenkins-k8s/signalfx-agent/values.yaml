@@ -1,0 +1,9 @@
+fullnameOverride: signalfx-agent
+logLevel: debug
+permitReadingSecrets: true # This was not documented in the helms chart.
+kubeletAPI:
+  skipVerify: true
+  url: https://localhost:10250
+monitors:
+- type: collectd/jenkins
+  discoveryRule: 'container_name =~ "jenkins-master"'
