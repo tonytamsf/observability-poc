@@ -10,8 +10,8 @@ deploy-jenkins:
 	kubectl apply -f jenkins-instance.yaml
 
 export SFX_REALM=us2
-export CLUSTER_NAME=js-istio-minikube # replace with your minikube cluster name.
-export SFX_TOKEN=s9hNSwWaE9dKNR1Xj3Ff3Q
+export CLUSTER_NAME= # replace with your minikube cluster name.
+export SFX_TOKEN= # replace with signalfx token
 
 deploy-signalfx:
 	helm repo add signalfx https://dl.signalfx.com/helm-repo

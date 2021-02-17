@@ -19,16 +19,27 @@ make install-jenkins-operator
 
 Create a Jenkins CR to instantiate a Jenkins master
 
-`make deploy-jenkins`
+```
+make deploy-jenkins
+```
 
 # Install SignalFx Smart Agent
 
 The Smart Agent is deployed using a helm chart. 
 The values for the helm chart is stored in `signalfx-agent/values.yaml`.
 
-Runt he followin to deploy the agent.
+Update the following in the `Makefile`
 
-`make deploy-signalfx`
+```
+export CLUSTER_NAME= # replace with your minikube cluster name.
+export SFX_TOKEN= # replace with signalfx token
+```
+
+Run the followin to deploy the agent.
+
+```
+make deploy-signalfx
+```
 
 # How service discovery works?
 
