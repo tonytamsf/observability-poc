@@ -8,6 +8,9 @@
 # Crash log files
 crash.log
 
+# Istio installation
+istio-opentelemetry/istio-*/**
+
 # Sensitive data should be provided via environment variables. Please use `TF_VAR_` prefix for variables as follows
 # export TF_VAR_aws_secret_access_key
 # *.tfvars
