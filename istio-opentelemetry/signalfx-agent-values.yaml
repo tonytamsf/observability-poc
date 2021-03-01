@@ -1,6 +1,7 @@
 fullnameOverride: agent
 logLevel: debug
 traceEndpointUrl: http://otel-collector.default.svc.cluster.local:9411/api/traces
+ingestUrl: http://otel-collector.default.svc.cluster.local:9943
 kubeletAPI:
   skipVerify: true
   url: https://localhost:10250
