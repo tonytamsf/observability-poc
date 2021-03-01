@@ -7,9 +7,7 @@ install-smartagent: start-cluster
 	helm repo update
 	helm install \
 	--values kube/signalfx-agent-values.yaml \
-	--set signalFxAccessToken=${SFX_TOKEN} \
-	--set clusterName=${CLUSTER_NAME} \
-	--set signalFxRealm=${SFX_REALM} signalfx-agent signalfx/signalfx-agent
+	--set clusterName=${CLUSTER_NAME} signalfx-agent signalfx/signalfx-agent
 
 install-otelagent: start-cluster
 	envsubst < kube/signalfx-otel.yaml | kubectl apply -f -
