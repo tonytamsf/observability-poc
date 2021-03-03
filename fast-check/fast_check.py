@@ -21,7 +21,7 @@ class Check(ABC):
 
     @abstractmethod
     def process(self, response):
-        raise NotImplementedError("Must override check")
+        raise NotImplementedError("Must override process")
 
     def check(self):
         request = urllib.request.Request(self.url)
@@ -61,7 +61,7 @@ class Ldap(Check):
         groups = whoami["authorities"]
         for g in LDAP_GROUPS:
             if g in groups:
-                print(f"member of {g}")
+                print(f"Member of {g}")
             else:
                 print(f"MISSING {g}")
 
