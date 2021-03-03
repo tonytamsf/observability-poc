@@ -14,20 +14,20 @@ LDAP_GROUPS = [
 
 
 class Check(ABC):
-    def __init__(self, url, name=None, usr=None, pwd=None):
+    def __init__(self, url, name=None):
         self.url = url
         self.name = name or ""
-        self.usr = usr or ""
-        self.pwd = pwd or ""
 
     @abstractmethod
     def process(self, response):
         raise NotImplementedError("Must override process")
 
-    def check(self):
+    def check(self, usr=None, pwd=None):
+        usr = usr or ""
+        pwd = pwd or ""
         request = urllib.request.Request(self.url)
         base64string = base64.standard_b64encode(
-            f"{self.usr}:{self.pwd}".encode("utf-8")
+            f"{usr}:{pwd}".encode("utf-8")
         )
         request.add_header("Authorization", f"Basic {base64string.decode('utf-8')}")
         request.add_header("Content-Type", "application/json")
@@ -41,12 +41,10 @@ class Check(ABC):
 
 
 class Bitbucket(Check):
-    def __init__(self, usr, pwd):
+    def __init__(self):
         super().__init__(
             "https://git.splunk.com/rest/api/1.0/logs/rootLogger",
-            "bitbucket admin",
-            usr,
-            pwd,
+            "bitbucket admin"
         )
 
     def process(self, response):
@@ -54,9 +52,9 @@ class Bitbucket(Check):
 
 
 class Ldap(Check):
-    def __init__(self, usr, pwd):
+    def __init__(self):
         super().__init__(
-            "https://jenkins-ee.splunkeng.com/whoAmI/api/json", "ldap groups", usr, pwd
+            "https://jenkins-ee.splunkeng.com/whoAmI/api/json", "ldap groups"
         )
 
     def process(self, response):
@@ -68,17 +66,17 @@ class Ldap(Check):
             else:
                 print(f"MISSING {g}")
 
+CHECKS=[
+    Bitbucket(),
+    Ldap()
+]
 
 def main():
     pwd = getpass.getpass(prompt="Enter Password: ", stream=None)
     usr = os.environ["USER"]
 
-    bb = Bitbucket(usr, pwd)
-    ldap = Ldap(usr, pwd)
-
-    bb.check()
-    ldap.check()
-
+    for check in CHECKS:
+        check.check(usr,pwd)
 
 if __name__ == "__main__":
     main()
