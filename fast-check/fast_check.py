@@ -7,7 +7,7 @@ pwd = getpass.getpass(prompt="Enter Password: ", stream=None)
 usr = os.environ["USER"]
 
 request = urllib.request.Request("https://git.splunk.com/rest/api/1.0/logs/rootLogger")
-# str =
+
 base64string = base64.standard_b64encode(f"{usr}:{pwd}".encode("utf-8"))
 request.add_header("Authorization", f"Basic {base64string.decode('utf-8')}")
 request.add_header("Content-Type", "application/json")
