@@ -1,14 +1,19 @@
 services:
   web:
     build: .
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=environment=${USER}_dev
+      - SPLK_SERVICE_NAME=${USER}-tracing-app
     ports:
       - "5000:5000"
+    volumes:
+      - .:/app
   otelcol:
     image: quay.io/signalfx/splunk-otel-collector:latest
     environment:
-      - SPLUNK_ACCESS_TOKEN
-      - SPLUNK_REALM
-      - SPLUNK_BALLAST_SIZE_MIB=683
+      - SPLUNK_ACCESS_TOKEN=${SPLUNK_ACCESS_TOKEN}
+      - SPLUNK_REALM=${SPLUNK_REALM}
+      - SPLUNK_BALLAST_SIZE_MIB=220
     ports:
       - "13133:13133"
       - "14250:14250"
