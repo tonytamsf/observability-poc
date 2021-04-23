@@ -1,10 +1,14 @@
-
+import flask
+import os
 import logging
-from flask import Flask
+from opentelemetry import trace
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
+
 logging.basicConfig(level=logging.DEBUG)
+logging.info(f"Trace exporter url: {os.environ.get('SPLK_TRACE_EXPORTER_URL')}")
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return 'Hello World!'
