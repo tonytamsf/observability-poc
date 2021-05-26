@@ -2,9 +2,10 @@ services:
   web:
     build: .
     environment:
-      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=${USER}_dev
+      - OTEL_RESOURCE_ATTRIBUTES=deployment.environment=workshop
       - OTEL_SERVICE_NAME=${USER}-tracing-app
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
+      - REDIS_HOST=${USER}-redis
     ports:
       - "5000:5000"
     volumes:
@@ -17,3 +18,8 @@ services:
       - SPLUNK_BALLAST_SIZE_MIB=220
     ports:
       - "4317:4317"
+  redis:
+    image: redis:6.2.3-alpine
+    container_name: ${USER}-redis
+    ports:
+      - "6379:6379"
