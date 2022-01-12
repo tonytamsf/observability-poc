@@ -13,6 +13,6 @@ Run the app
 ```
 docker-compose up
 ```
-Hit `localhost:5000` to generate traffic. 
+Hit `localhost:6999` to generate traffic. 
 
 In SignalFx select `Metrics`, search for `jaeger` and select `otelcol_receiver_accepted_spans` to see metrics.
